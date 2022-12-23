@@ -241,7 +241,33 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    val res = StringBuilder()
+    var s = n
+    val map = mutableMapOf<Int, String>(
+        1000 to "M",
+        900 to "CM",
+        500 to "D",
+        400 to "CD",
+        100 to "C",
+        90 to "XC",
+        50 to "L",
+        40 to "XL",
+        10 to "X",
+        9 to "IX",
+        5 to "V",
+        4 to "IV",
+        1 to "I"
+    )
+    for ((key, value) in map) {
+        while (s / key != 0) {
+            s -= key
+            res.append(value)
+        }
+    }
+
+    return res.toString()
+}
 
 /**
  * Очень сложная (7 баллов)
@@ -250,4 +276,137 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    val res = StringBuilder()
+    var s = n.toString()
+    val map1 = mutableMapOf<Int, String>(
+        0 to "",
+        1 to "один",
+        2 to "два",
+        3 to "три",
+        4 to "четыре",
+        5 to "пять",
+        6 to "шесть",
+        7 to "семь",
+        8 to "восемь",
+        9 to "девять",
+    )
+    val map12 = mutableMapOf<Int, String>(
+        0 to "",
+        1 to "одна",
+        2 to "две",
+        3 to "три",
+        4 to "четыре",
+        5 to "пять",
+        6 to "шесть",
+        7 to "семь",
+        8 to "восемь",
+        9 to "девять",
+    )
+    val map2 = mutableMapOf<Int, String>(
+        0 to "",
+        1 to "десять",
+        2 to "двадцать",
+        3 to "тридцать",
+        4 to "сорок",
+        5 to "пятьдесят",
+        6 to "шестьдесят",
+        7 to "семьдесят",
+        8 to "восемьдесят",
+        9 to "девяносто",
+    )
+    val map3 = mutableMapOf<Int, String>(
+        0 to "",
+        1 to "сто",
+        2 to "двести",
+        3 to "триста",
+        4 to "четыреста",
+        5 to "пятьсот",
+        6 to "шестьсот",
+        7 to "семьсот",
+        8 to "восемьсот",
+        9 to "девятьсот",
+    )
+    val map23 = mutableMapOf<Int, String>(
+        11 to "одиннадцать",
+        12 to "двенадцать",
+        13 to "тринадцать",
+        14 to "четырнадцать",
+        15 to "пятнадцать",
+        16 to "шестнадцать",
+        17 to "семнадцать",
+        18 to "восемнадцать",
+        19 to "девятнадцать",
+    )
+
+    var k = s.length
+    while (k != 0) {
+        if (k == 6) {
+            res.append(map3[s.first().toString().toInt()] + " ")
+            s = (s.toInt() - (s[0] + "00000").toInt()).toString()
+            k -= 1
+        }
+        if (k == 5) {
+            if ((20 > (s.toInt() / 1000)) && ((s.toInt() / 1000) > 10)) {
+                res.append(map23[s.toInt() / 1000] + " " + "тысяч" + " ")
+                s = (s.toInt() - (s.toInt() / 1000 * 1000)).toString()
+                k -= 2
+            } else if (s.length == k) {
+                res.append(map2[s.first().toString().toInt()] + " ")
+                s = (s.toInt() - (s[0] + "0000").toInt()).toString()
+                k -= 1
+            } else {
+                res.append("")
+                k -= 1
+            }
+
+        }
+        if (k == 4) {
+            if (s.length == k) {
+                res.append(map12[s.first().toString().toInt()] + " ")
+                when (map12[s.first().toString().toInt()]) {
+                    "одна" -> res.append("тысяча" + " ")
+                    "две" -> res.append("тысячи" + " ")
+                    "три" -> res.append("тысячи" + " ")
+                    "четыре" -> res.append("тысячи" + " ")
+                    "пять" -> res.append("тысяч" + " ")
+                    "шесть" -> res.append("тысяч" + " ")
+                    "семь" -> res.append("тысяч" + " ")
+                    "восемь" -> res.append("тысяч" + " ")
+                    "девять" -> res.append("тысяч" + " ")
+                }
+                s = (s.toInt() - (s[0] + "000").toInt()).toString()
+            } else res.append("тысяч" + " ")
+            k -= 1
+        }
+        if (k == 3) {
+            if (s.length == k) {
+                res.append(map3[s.first().toString().toInt()] + " ")
+                s = (s.toInt() - (s[0] + "00").toInt()).toString()
+            } else res.append("")
+            k -= 1
+        }
+        if (k == 2) {
+            if ((20 > s.toInt()) && (s.toInt() > 10)) {
+                res.append(map23[s.toInt()] + " ")
+                s = 0.toString()
+                k -= 1
+            } else if (s.length == k) {
+                res.append(map2[s.first().toString().toInt()] + " ")
+                s = (s.toInt() - (s[0] + "0").toInt()).toString()
+                k -= 1
+            } else {
+                res.append("")
+                k -= 1
+            }
+        }
+        if (k == 1) {
+            if (s.length == k) {
+                res.append(map1[s.first().toString().toInt()])
+                s = (s.toInt() - (s[0]).toInt()).toString()
+            } else res.append("")
+            k -= 1
+        }
+    }
+    return res.toString().trim()
+}
