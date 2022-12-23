@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 // Урок 3: циклы
@@ -192,7 +193,18 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var count = 0
+    var f = 1
+    var number = 0
+    while (count < n) {
+        val numberf = f * f
+        count += digitNumber(numberf)
+        number = f * f
+        f++
+    }
+    return scissors(count, n, number)
+}
 
 /**
  * Сложная (5 баллов)
@@ -203,4 +215,36 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var result = 0
+    var globalDigitCount = 0
+    for (i in 1..n) {
+        //var number = revert(fib(i))
+        var number = fib(i)
+        var localDigitCount = 0
+        var num = number
+        while (num > 0) {
+            localDigitCount++
+            num /= 10
+        }
+        num = number
+        var numOfLocalDigit = 0
+        while (number > 0 && globalDigitCount < n) {
+            globalDigitCount++
+            numOfLocalDigit++
+            number /= 10
+        }
+        while (localDigitCount > numOfLocalDigit) {
+            num /= 10
+            localDigitCount--
+        }
+        result = num % 10
+        if (globalDigitCount == n) {
+            break
+        }
+    }
+    return result
+}
+fun main() {
+    println(fibSequenceDigit(26))
+}
