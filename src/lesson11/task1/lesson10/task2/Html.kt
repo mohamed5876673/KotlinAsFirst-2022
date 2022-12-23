@@ -1,4 +1,4 @@
-package lesson10.task2
+package lesson11.task1.lesson10.task2
 
 import kotlinx.html.*
 import kotlinx.html.stream.appendHTML

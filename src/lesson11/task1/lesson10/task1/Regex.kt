@@ -1,6 +1,6 @@
-package lesson10.task1
+package lesson11.task1.lesson10.task1
 
-import lesson10.task1.Expression.Operation.*
+import lesson11.task1.lesson10.task1.Expression.Operation.*
 import java.io.File
 import java.util.regex.Pattern
 
